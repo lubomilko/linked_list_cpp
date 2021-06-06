@@ -141,13 +141,18 @@ LinkedList<T>::~LinkedList()
     {
         // Save next item to temporary pointer.
         p_next = p_current->p_next;
-        // Delete the current item. It must be ensured (in the list item destructor)
-        // that the next pointer of the deleted item is set to null, otherwise this
-        // while loop cannot end if the list is looped.
+        // Set the next pointer of the current item to null, otherwise this while
+        // cycle will never end if the list is looped, because the null will
+        // never be detected.
+        // The next pointer is set to null in the list item desctructor, but it is
+        // not enough for some unknown reason. That'w why the next pointer is set to
+        // null also here.
         // Note:
         //    Beware that all the items cut-out after the list loop (if there is one)
         //    will remain undeleted in memory, because no mechanism is implemented to
         //    find them!
+        p_current->p_next = nullptr;
+        // Delete the current item.
         delete p_current;
         // Move to the next item.
         p_current = p_next;
